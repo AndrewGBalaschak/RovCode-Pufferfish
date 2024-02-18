@@ -71,7 +71,7 @@ while True:
         # This try except block is hacky, basically the sign array is shorter than the value array since triggers don't have sign
         try:
             # Set the motor's direction bit based off the sign
-            if(float(signArray[0]) <= 0):
+            if(signArray[0] <= 0):
                 pca.continuous_servo[SIGN_MAPPING[i]].throttle = 1
             else:
                 pca.continuous_servo[SIGN_MAPPING[i]].throttle = -1
