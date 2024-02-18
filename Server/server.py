@@ -69,7 +69,7 @@ while True:
         pca.continuous_servo[MOTOR_MAPPING[i]].throttle = valueArray[i]
 
         # Set the motor's direction bit based off the sign
-        if(signArray[0] <= 0):
+        if(signArray[i] <= 0):
             pca.continuous_servo[SIGN_MAPPING[i]].throttle = 1
         else:
             pca.continuous_servo[SIGN_MAPPING[i]].throttle = -1
