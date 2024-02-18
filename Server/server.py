@@ -68,12 +68,8 @@ while True:
         # Set the motor's throttle
         pca.continuous_servo[MOTOR_MAPPING[i]].throttle = valueArray[i]
 
-        # This try except block is hacky, basically the sign array is shorter than the value array since triggers don't have sign
-        try:
-            # Set the motor's direction bit based off the sign
-            if(signArray[0] <= 0):
-                pca.continuous_servo[SIGN_MAPPING[i]].throttle = 1
-            else:
-                pca.continuous_servo[SIGN_MAPPING[i]].throttle = -1
-        except:
-            pass
+        # Set the motor's direction bit based off the sign
+        if(signArray[0] <= 0):
+            pca.continuous_servo[SIGN_MAPPING[i]].throttle = 1
+        else:
+            pca.continuous_servo[SIGN_MAPPING[i]].throttle = -1
