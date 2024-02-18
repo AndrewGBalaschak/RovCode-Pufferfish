@@ -121,10 +121,10 @@ while run:
     # For each available joystick (controller)
     for joystick in joysticks:
         # Read input from controller
-        LeftX = preProcessJoystick(joystick.get_axis(0))
-        LeftY = preProcessJoystick(joystick.get_axis(1))
-        RightX = preProcessJoystick(joystick.get_axis(2))
-        RightY = preProcessJoystick(joystick.get_axis(3))
+        LeftX = preProcessJoystick(joystick.get_axis(0))        # Left joystick X
+        LeftY = preProcessJoystick(joystick.get_axis(1))        # Left joystick Y
+        RightX = preProcessJoystick(joystick.get_axis(2))       # Right joystick X
+        RightY = preProcessJoystick(joystick.get_axis(3))       # Right joystick Y
         LeftTrigger = preProcessTrigger(joystick.get_axis(4))
         RightTrigger = preProcessTrigger(joystick.get_axis(5))
 
