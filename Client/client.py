@@ -31,11 +31,6 @@ PROPORTIONAL_MATRIX =  [[1, 1, 0],
 
 # Pre-process the joystick input to apply a deadzone, as well as determine the direction
 def preProcessJoystick(axis):
-    # Find the sign of the input value, if the value is negative the sign bit is set
-    sign = 0
-    if axis < 0:
-        sign = 1
-
     # Cube the analog axis value, this should allow for better fine motor control
     axis = axis**3
 
@@ -46,7 +41,7 @@ def preProcessJoystick(axis):
     if axis < DEADZONE:
         axis = 0
 
-    return sign, axis
+    return axis
 
 # Pre-process trigger to apply a deadzone, as well as map from range [-1,1] to range [0,1]
 def preProcessTrigger(axis):
@@ -63,14 +58,14 @@ def preProcessTrigger(axis):
 # LeftY controls forward/backward movement
 # LeftX controls yaw
 # RightY controls up/down movement
-def pufferfishControl(LeftYSign, LeftY, LeftXSign, LeftX, RightYSign, RightY):
+def pufferfishControl(LeftX, LeftY, RightY):
     # Declaring the numpy array that will be used for the thrust vectors applied to the motors
     thrustMatrix = np.array([0, 0, 0])
 
     # Using list comprehension, multiply selected rows in the proportional matrix by the controller input and sum the vectors togethor
-    thrustMatrix = thrustMatrix + [x * LeftY * LeftYSign for x in PROPORTIONAL_MATRIX[0]]       # Forward/backwards
-    thrustMatrix = thrustMatrix + [x * LeftX * LeftXSign for x in PROPORTIONAL_MATRIX[5]]       # Yaw
-    thrustMatrix = thrustMatrix + [x * RightY * RightYSign for x in PROPORTIONAL_MATRIX[2]]     # Up/down
+    thrustMatrix = thrustMatrix + [x * LeftX for x in PROPORTIONAL_MATRIX[5]]       # Yaw
+    thrustMatrix = thrustMatrix + [x * LeftY for x in PROPORTIONAL_MATRIX[0]]       # Forward/backwards
+    thrustMatrix = thrustMatrix + [x * RightY for x in PROPORTIONAL_MATRIX[2]]      # Up/down
 
     # Normalize the vector
     thrustMatrix = thrustMatrix / np.linalg.norm(thrustMatrix)
@@ -80,12 +75,11 @@ def pufferfishControl(LeftYSign, LeftY, LeftXSign, LeftX, RightYSign, RightY):
     valueArray = []
 
     # Pull the sign out from the matrix to make the sign array for the motor controller
-    # The logic for this might need to be flipped
     for elem in thrustMatrix:
-        if elem >= 0:
-            signArray.append(0)
-        else:
+        if elem < 0:
             signArray.append(1)
+        else:
+            signArray.append(0)
 
     # Take the absolute value of each element to make the value array for the motor controller
     for elem in thrustMatrix:
@@ -127,10 +121,10 @@ while run:
     # For each available joystick (controller)
     for joystick in joysticks:
         # Read input from controller
-        LeftXSign, LeftX = preProcessJoystick(joystick.get_axis(0))
-        LeftYSign, LeftY = preProcessJoystick(joystick.get_axis(1))
-        RightXSign, RightX = preProcessJoystick(joystick.get_axis(2))
-        RightYSign, RightY = preProcessJoystick(joystick.get_axis(3))
+        LeftX = preProcessJoystick(joystick.get_axis(0))
+        LeftY = preProcessJoystick(joystick.get_axis(1))
+        RightX = preProcessJoystick(joystick.get_axis(2))
+        RightY = preProcessJoystick(joystick.get_axis(3))
         LeftTrigger = preProcessTrigger(joystick.get_axis(4))
         RightTrigger = preProcessTrigger(joystick.get_axis(5))
 
@@ -139,7 +133,7 @@ while run:
         # valueArray = [LeftX, LeftY, RightX, RightY, LeftTrigger, RightTrigger]
 
         # Process the inputs for proportional control
-        sendstring = pufferfishControl(LeftYSign, LeftY, LeftXSign, LeftX, RightYSign, RightY)
+        sendstring = pufferfishControl(LeftX, LeftY, RightY)
 
     # Make sure the string is not null, this can happen on startup
     if sendString:
