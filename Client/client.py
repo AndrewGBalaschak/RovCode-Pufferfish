@@ -51,6 +51,18 @@ def preProcessTrigger(axis):
     
     return axis
 
+# Returns a matrix normalized so the maximum value in the matrix is 1
+def normalizeMatrix(ary):
+    max = 1
+    
+    # Get maximum magnitude in matrix
+    for elem in ary:
+        if abs(elem) > max:
+            max = abs(elem)
+    
+    # Divide each element by the max value
+    return [x / max for x in ary]
+
 # Take the input from the controller and output throttle and sign for each motor
 # LeftY controls forward/backward movement
 # LeftX controls yaw
@@ -65,7 +77,7 @@ def pufferfishControl(LeftX, LeftY, RightY):
     thrustMatrix = thrustMatrix + [x * RightY for x in PROPORTIONAL_MATRIX[2]]      # Up/down
 
     # Normalize the vector
-    thrustMatrix = thrustMatrix / np.linalg.norm(thrustMatrix)
+    thrustMatrix = normalizeMatrix(thrustMatrix)
 
     # Declare the arrays for extracting the sign and value
     signArray = []
@@ -87,7 +99,7 @@ def pufferfishControl(LeftX, LeftY, RightY):
     valueArray = np.pad(valueArray, (0, 8 - len(valueArray)), constant_values = 0)
 
     # Concatenate the sign and value arrays into a string for transmission
-    sendString = ','.join([str(elem) for elem in (signArray + valueArray)])
+    sendString = ','.join([str(elem) for elem in (signArray.tolist() + valueArray.tolist())])
     return sendString
 
 
