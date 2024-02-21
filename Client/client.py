@@ -34,11 +34,8 @@ def preProcessJoystick(axis):
     # Cube the analog axis value, this should allow for better fine motor control
     axis = axis**3
 
-    # Take the absolute value of the axis, this finishes the conversion into sign magnitude notation
-    axis = abs(axis)
-
     # Apply deadzone
-    if axis < DEADZONE:
+    if abs(axis) < DEADZONE:
         axis = 0
 
     return axis
