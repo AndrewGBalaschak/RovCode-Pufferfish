@@ -57,7 +57,7 @@ def preProcessTrigger(axis):
 # RightY controls up/down movement
 def pufferfishControl(LeftX, LeftY, RightY):
     # Declaring the numpy array that will be used for the thrust vectors applied to the motors
-    thrustMatrix = np.array([0, 0, 0])
+    thrustMatrix = np.array(len(PROPORTIONAL_MATRIX[0]))
 
     # Using list comprehension, multiply selected rows in the proportional matrix by the controller input and sum the vectors togethor
     thrustMatrix = thrustMatrix + [x * LeftX for x in PROPORTIONAL_MATRIX[5]]       # Yaw
@@ -124,10 +124,6 @@ while run:
         RightY = preProcessJoystick(joystick.get_axis(3))       # Right joystick Y
         LeftTrigger = preProcessTrigger(joystick.get_axis(4))
         RightTrigger = preProcessTrigger(joystick.get_axis(5))
-
-        # Create arrays for each of the inputs
-        # signArray = [LeftXSign, LeftYSign, RightXSign, RightYSign, 1, 1]
-        # valueArray = [LeftX, LeftY, RightX, RightY, LeftTrigger, RightTrigger]
 
         # Process the inputs for proportional control
         sendstring = pufferfishControl(LeftX, LeftY, RightY)
