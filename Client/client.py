@@ -20,7 +20,7 @@ DEADZONE = 0.01
 
 # Row 4: X rotation (roll)
 # Row 5: Y rotation (pitch)
-# Row 6: Z rotatioon (yaw)
+# Row 6: Z rotation (yaw)
 
 PROPORTIONAL_MATRIX =  [[1, 1, 0],
                         [0, 0, 0],
