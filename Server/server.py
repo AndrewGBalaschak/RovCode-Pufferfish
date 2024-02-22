@@ -48,12 +48,7 @@ while True:
 
     # Slice the array into sign and value
     signArray = testArr[:8]
-    valueArray = testArr[-8:]
-
-    # Commented this out/didn't implement since printing tends to use a lot of CPU
-    # Print the received values to the screen
-    # os.system("clear")
-    # print(data)
+    valueArray = testArr[8:]
 
     # Cast signArray values to int
     for i in range(len(signArray)):
@@ -62,6 +57,12 @@ while True:
     # Cast valueArray values to float
     for i in range(len(valueArray)):
         valueArray[i] = float(valueArray[i])
+
+    # Comment this out for production since printing tends to use a lot of CPU
+    # Print the received values to the screen
+    os.system("clear")
+    print("Motor signs: ", signArray)
+    print("Motor throttles: ", valueArray)
 
     # Loop through the array and apply the input to the motor
     for i in range(8):
