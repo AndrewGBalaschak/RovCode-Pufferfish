@@ -69,12 +69,12 @@ def normalizeMatrix(ary):
 # RightY controls up/down movement
 def pufferfishControl(LeftX, LeftY, RightY):
     # Declaring the numpy array that will be used for the thrust vectors applied to the motors
-    thrustMatrix = np.array(len(PROPORTIONAL_MATRIX[0]))
+    thrustMatrix = np.array([0,0,0])
 
     # Using list comprehension, multiply selected rows in the proportional matrix by the controller input and sum the vectors togethor
-    thrustMatrix = thrustMatrix + [x * LeftX for x in PROPORTIONAL_MATRIX[5]]       # Yaw
     thrustMatrix = thrustMatrix + [x * LeftY for x in PROPORTIONAL_MATRIX[0]]       # Forward/backwards
     thrustMatrix = thrustMatrix + [x * RightY for x in PROPORTIONAL_MATRIX[2]]      # Up/down
+    thrustMatrix = thrustMatrix + [x * LeftX for x in PROPORTIONAL_MATRIX[5]]       # Yaw
 
     # Normalize the vector
     thrustMatrix = normalizeMatrix(thrustMatrix)
@@ -138,7 +138,7 @@ while run:
         RightTrigger = preProcessTrigger(joystick.get_axis(5))
 
         # Process the inputs for proportional control
-        sendstring = pufferfishControl(LeftX, LeftY, RightY)
+        sendString = pufferfishControl(LeftX, LeftY, RightY)
 
     # Make sure the string is not null, this can happen on startup
     if sendString:
