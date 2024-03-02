@@ -7,7 +7,7 @@ NUM_MOTORS=16
 
 # PWM ranges for each motor
 MIN_IMP = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-MAX_IMP = [0,0,0,0,0,0,0,0,6500,6500,0,0,0,0,0,0]
+MAX_IMP = [19950,6500,19950,6500,19950,6500,19950,6500,19950,6500,19950,6500,19950,6500,19950,6500]
 
 HOST = "192.168.1.11"
 PORT = 5000
@@ -33,8 +33,8 @@ print(f"server accepted connection from {clientAdress}")
 
 # Initializes the PWM range for each motor
 def init():
-    i = 8
-    pca.continuous_servo[i].set_pulse_width_range(MIN_IMP[i] , MAX_IMP[i])
+    for i in range(16):
+        pca.continuous_servo[i].set_pulse_width_range(MIN_IMP[i] , MAX_IMP[i])
 
 init()
 
@@ -70,7 +70,8 @@ while True:
         pca.continuous_servo[MOTOR_MAPPING[i]].throttle = valueArray[i]
 
         # Set the motor's direction bit based off the sign
+        # This is not how it should be done since we're just trying to set lines high and low, but it works
         if(signArray[i] <= 0):
-            pca.continuous_servo[SIGN_MAPPING[i]].throttle = 1
+            pca._pca.channels[SIGN_MAPPING[i]].duty_cycle = 0xFFFF
         else:
-            pca.continuous_servo[SIGN_MAPPING[i]].throttle = -1
+            pca._pca.channels[SIGN_MAPPING[i]].duty_cycle = 0x0000
