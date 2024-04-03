@@ -14,6 +14,8 @@ def testAllMotors():
     # Loop over the first 64 integers
     for i in range(64):
         thrustMatrix = []
+        signArray = []
+        valueArray = []
 
         # Convert integer to binary and remove the '0b' prefix
         binary_string = bin(i)[2:]
@@ -45,8 +47,8 @@ def testAllMotors():
 
         # Print the values to the screen
         os.system("clear")
-        print(thrustMatrix)
-        time.sleep(0.1)
+        print(valueArray)
+        time.sleep(1)
 
 
 # Create a socket and connect to the Raspberry Pi
