@@ -24,7 +24,8 @@ def testAllMotors():
         binary_string_padded = binary_string.zfill(6)
 
         # Split binary string into individual digits and convert each to an integer
-        thrustMatrix = [int(bit) for bit in binary_string_padded]
+        # thrustMatrix = [int(bit) for bit in binary_string_padded]
+        thrustMatrix = [1 if bit == '1' else -1 for bit in binary_string_padded]
 
         # Pull the sign out from the matrix to make the sign array for the motor controller
         for elem in thrustMatrix:
